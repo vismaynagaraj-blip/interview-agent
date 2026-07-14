@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Interview Coach — Powered by IBM watsonx.ai</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>"/>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link href="/static/css/style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ═══════════════════════ NAVBAR ═══════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-glass fixed-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <div class="brand-icon">
+        <i class="bi bi-cpu-fill text-primary"></i>
+      </div>
+      <div>
+        <span class="brand-title">InterviewAI</span>
+        <span class="brand-sub d-none d-md-inline"> · Powered by IBM watsonx.ai</span>
+      </div>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+    <div class="d-flex align-items-center gap-3 ms-auto">
+      <div class="status-badge" id="statusBadge">
+        <span class="status-dot"></span>
+        <span class="status-text">Connecting...</span>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary" onclick="toggleTheme()" title="Toggle theme">
+        <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+      </button>
+      <button class="btn btn-sm btn-primary px-3" onclick="clearSession()">
+        <i class="bi bi-arrow-counterclockwise me-1"></i>New Session
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ SIDEBAR (mobile offcanvas + desktop) ══════════════ -->
+<div class="offcanvas offcanvas-start sidebar-offcanvas" tabindex="-1" id="sidebar">
+  <div class="offcanvas-header border-bottom border-secondary">
+    <h6 class="offcanvas-title d-flex align-items-center gap-2">
+      <i class="bi bi-cpu-fill text-primary"></i> InterviewAI
+    </h6>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" href="#" onclick="showTab('dashboard')">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('chat')">
+        <i class="bi bi-chat-dots-fill"></i> AI Chat Coach
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('questions')">
+        <i class="bi bi-question-circle-fill"></i> Questions Generator
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('improve')">
+        <i class="bi bi-graph-up-arrow"></i> Answer Analyser
+      </a>
+      <div class="nav-section-label mt-3">Planning</div>
+      <a class="nav-item" href="#" onclick="showTab('plan')">
+        <i class="bi bi-calendar2-check-fill"></i> Interview Planner
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('resume')">
+        <i class="bi bi-file-earmark-person-fill"></i> Resume Analyser
+      </a>
+      <div class="nav-section-label mt-3">Resources</div>
+      <a class="nav-item" href="#" onclick="showTab('companies')">
+        <i class="bi bi-building-fill"></i> Company Database
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('hr')">
+        <i class="bi bi-people-fill"></i> HR Guidelines
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('network')">
+        <i class="bi bi-diagram-3-fill"></i> Pro Network Tips
+      </a>
+    </nav>
+  </div>
+</div>
+
+<!-- ═══════════════════════ MAIN LAYOUT ══════════════════════════════════════ -->
+<div class="main-wrapper">
+  <!-- Desktop Sidebar -->
+  <aside class="desktop-sidebar d-none d-lg-flex flex-column">
+    <nav class="sidebar-nav flex-grow-1 py-3">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" href="#" onclick="showTab('dashboard',this)">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('chat',this)">
+        <i class="bi bi-chat-dots-fill"></i> AI Chat Coach
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('questions',this)">
+        <i class="bi bi-question-circle-fill"></i> Questions Generator
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('improve',this)">
+        <i class="bi bi-graph-up-arrow"></i> Answer Analyser
+      </a>
+      <div class="nav-section-label mt-3">Planning</div>
+      <a class="nav-item" href="#" onclick="showTab('plan',this)">
+        <i class="bi bi-calendar2-check-fill"></i> Interview Planner
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('resume',this)">
+        <i class="bi bi-file-earmark-person-fill"></i> Resume Analyser
+      </a>
+      <div class="nav-section-label mt-3">Resources</div>
+      <a class="nav-item" href="#" onclick="showTab('companies',this)">
+        <i class="bi bi-building-fill"></i> Company Database
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('hr',this)">
+        <i class="bi bi-people-fill"></i> HR Guidelines
+      </a>
+      <a class="nav-item" href="#" onclick="showTab('network',this)">
+        <i class="bi bi-diagram-3-fill"></i> Pro Network Tips
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="model-badge">
+        <i class="bi bi-stars text-warning me-1"></i>
+        <span id="sidebarModel">ibm/granite-13b</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Content Area -->
+  <main class="content-area">
+
+    <!-- ─── DASHBOARD TAB ─────────────────────────────────────────── -->
+    <div class="tab-pane active" id="tab-dashboard">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-speedometer2 me-2 text-primary"></i>Training Dashboard</h2>
+        <p class="page-subtitle">Your personalised interview preparation overview</p>
+      </div>
+
+      <!-- Hero Banner -->
+      <div class="hero-banner mb-4">
+        <div class="hero-content">
+          <div class="hero-text">
+            <h3 class="mb-1">Welcome back, Candidate 👋</h3>
+            <p class="mb-3 opacity-75">You're on track. Keep practising — consistency wins interviews.</p>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-primary btn-sm px-4" onclick="showTab('chat',null)">
+                <i class="bi bi-chat-dots-fill me-2"></i>Start AI Session
+              </button>
+              <button class="btn btn-outline-light btn-sm px-4" onclick="showTab('questions',null)">
+                <i class="bi bi-question-circle me-2"></i>Generate Questions
+              </button>
+            </div>
+          </div>
+          <div class="hero-graphic d-none d-md-flex">
+            <div class="hero-orb"></div>
+            <i class="bi bi-cpu-fill hero-cpu"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-chat-square-dots-fill"></i></div>
+            <div class="stat-value" id="statMessages">0</div>
+            <div class="stat-label">Messages</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="bi bi-check2-circle"></i></div>
+            <div class="stat-value" id="statQuestions">0</div>
+            <div class="stat-label">Questions Practised</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-star-fill"></i></div>
+            <div class="stat-value" id="statScore">—</div>
+            <div class="stat-label">Avg. Confidence</div>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-card">
+            <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="bi bi-building-fill"></i></div>
+            <div class="stat-value" id="statCompanies">7</div>
+            <div class="stat-label">Companies in DB</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <h5 class="section-title mb-3"><i class="bi bi-lightning-fill text-warning me-2"></i>Quick Actions</h5>
+      <div class="row g-3 mb-4">
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="action-card" onclick="showTab('questions',null)">
+            <i class="bi bi-question-circle-fill action-icon text-primary"></i>
+            <h6>Generate Questions</h6>
+            <p>AI-powered targeted questions from your resume</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="action-card" onclick="showTab('improve',null)">
+            <i class="bi bi-graph-up-arrow action-icon text-success"></i>
+            <h6>Analyse My Answer</h6>
+            <p>Get STAR-format feedback and improvement tips</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="action-card" onclick="showTab('plan',null)">
+            <i class="bi bi-calendar2-check-fill action-icon text-warning"></i>
+            <h6>30-Day Plan</h6>
+            <p>Personalised study plan for your target role</p>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <div class="action-card" onclick="showTab('companies',null)">
+            <i class="bi bi-building-fill action-icon text-info"></i>
+            <h6>Company Prep</h6>
+            <p>Insider tips and HR guidelines per company</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Config Panel -->
+      <div class="config-panel">
+        <h5 class="mb-3"><i class="bi bi-sliders me-2 text-primary"></i>Agent Configuration</h5>
+        <div class="row g-3">
+          <div class="col-12 col-md-4">
+            <label class="form-label small fw-semibold">Model</label>
+            <div class="config-value" id="cfgModel">Loading...</div>
+          </div>
+          <div class="col-6 col-md-4">
+            <label class="form-label small fw-semibold">Answer Framework</label>
+            <div class="config-value" id="cfgFormat">STAR</div>
+          </div>
+          <div class="col-6 col-md-4">
+            <label class="form-label small fw-semibold">Max Questions</label>
+            <div class="config-value" id="cfgMaxQ">15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── CHAT TAB ──────────────────────────────────────────────── -->
+    <div class="tab-pane" id="tab-chat">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-chat-dots-fill me-2 text-primary"></i>AI Chat Coach</h2>
+        <p class="page-subtitle">Chat with your personal IBM watsonx.ai interview coach</p>
+      </div>
+      <div class="chat-layout">
+        <!-- Chat Context Bar -->
+        <div class="chat-context-bar mb-3">
+          <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-4">
+              <label class="form-label small">Your Role</label>
+              <input type="text" class="form-control form-control-sm" id="chatRole" placeholder="e.g. Software Engineer"/>
+            </div>
+            <div class="col-12 col-sm-4">
+              <label class="form-label small">Target Company</label>
+              <select class="form-select form-select-sm" id="chatCompany">
+                <option value="">General</option>
+                {% for key, co in companies.items() %}
+                <option value="{{ key }}">{{ co.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-4">
+              <button class="btn btn-sm btn-outline-danger w-100" onclick="clearChat()">
+                <i class="bi bi-trash me-1"></i>Clear Chat
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Messages Window -->
+        <div class="chat-window" id="chatWindow">
+          <div class="chat-welcome">
+            <div class="chat-welcome-icon"><i class="bi bi-cpu-fill"></i></div>
+            <h5>Hello! I'm your AI Interview Coach</h5>
+            <p>Ask me anything about interview preparation, practice questions, or career advice.</p>
+            <div class="chat-suggestions">
+              <button class="suggestion-chip" onclick="sendSuggestion('Help me prepare for a software engineer interview at Google')">Google SWE prep</button>
+              <button class="suggestion-chip" onclick="sendSuggestion('What are the best STAR method stories for leadership questions?')">STAR stories</button>
+              <button class="suggestion-chip" onclick="sendSuggestion('How should I answer salary negotiation questions?')">Salary tips</button>
+              <button class="suggestion-chip" onclick="sendSuggestion('What questions should I ask the interviewer?')">Questions to ask</button>
+            </div>
+          </div>
+        </div>
+        <!-- Input Bar -->
+        <div class="chat-input-bar">
+          <div class="chat-input-wrapper">
+            <textarea class="chat-textarea" id="chatInput" rows="1"
+              placeholder="Ask your AI coach anything... (Shift+Enter for new line)"
+              onkeydown="handleChatKey(event)"></textarea>
+            <button class="chat-send-btn" onclick="sendChatMessage()" id="chatSendBtn">
+              <i class="bi bi-send-fill"></i>
+            </button>
+          </div>
+          <div class="chat-footer-info">
+            <span><i class="bi bi-shield-check text-success me-1"></i>Safe &amp; Private</span>
+            <span><i class="bi bi-stars text-warning me-1"></i>IBM Granite</span>
+            <span><i class="bi bi-lightning-fill text-primary me-1"></i>STAR Framework</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── QUESTIONS GENERATOR TAB ───────────────────────────────── -->
+    <div class="tab-pane" id="tab-questions">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-question-circle-fill me-2 text-primary"></i>Questions Generator</h2>
+        <p class="page-subtitle">AI-generated targeted questions from your resume and job role</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-lg-5">
+          <div class="form-card">
+            <h6 class="fw-semibold mb-3"><i class="bi bi-person-fill me-2 text-primary"></i>Your Profile</h6>
+            <div class="mb-3">
+              <label class="form-label">Job Title / Role <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="qRole" placeholder="e.g. Senior Data Scientist"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Experience Level</label>
+              <select class="form-select" id="qExperience">
+                <option>Entry-level (0-2 years)</option>
+                <option selected>Mid-level (3-5 years)</option>
+                <option>Senior (6-10 years)</option>
+                <option>Lead / Principal (10+ years)</option>
+                <option>Executive / Director</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Target Company</label>
+              <select class="form-select" id="qCompany">
+                <option value="">General (any company)</option>
+                {% for key, co in companies.items() %}
+                <option value="{{ key }}">{{ co.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Difficulty Level</label>
+              <div class="btn-group w-100" role="group">
+                <input type="radio" class="btn-check" name="difficulty" id="dBeginner" value="Beginner"/>
+                <label class="btn btn-outline-success btn-sm" for="dBeginner">Beginner</label>
+                <input type="radio" class="btn-check" name="difficulty" id="dMid" value="Intermediate" checked/>
+                <label class="btn btn-outline-warning btn-sm" for="dMid">Intermediate</label>
+                <input type="radio" class="btn-check" name="difficulty" id="dAdv" value="Advanced"/>
+                <label class="btn btn-outline-danger btn-sm" for="dAdv">Advanced</label>
+                <input type="radio" class="btn-check" name="difficulty" id="dExp" value="Expert"/>
+                <label class="btn btn-outline-primary btn-sm" for="dExp">Expert</label>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Number of Questions</label>
+              <div class="d-flex align-items-center gap-3">
+                <input type="range" class="form-range flex-grow-1" id="qNumQuestions" min="3" max="15" value="5"
+                  oninput="document.getElementById('qNumDisplay').textContent=this.value"/>
+                <span class="badge bg-primary px-3 py-2" id="qNumDisplay">5</span>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Resume / Key Skills (optional)</label>
+              <textarea class="form-control" id="qResume" rows="5"
+                placeholder="Paste your resume text or key skills here for personalised questions...&#10;&#10;Example:&#10;• 5 years Python, ML, TensorFlow&#10;• Led team of 8 engineers&#10;• Reduced latency by 40%"></textarea>
+            </div>
+            <button class="btn btn-primary w-100 py-2" onclick="generateQuestions()" id="genQBtn">
+              <i class="bi bi-stars me-2"></i>Generate Questions with AI
+            </button>
+          </div>
+        </div>
+        <div class="col-12 col-lg-7">
+          <div class="result-panel" id="questionsResult">
+            <div class="result-placeholder">
+              <i class="bi bi-question-diamond display-4 text-muted opacity-50"></i>
+              <p class="mt-3 text-muted">Fill in your profile and click <strong>Generate Questions</strong> to get AI-powered interview questions tailored to your role.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── ANSWER ANALYSER TAB ───────────────────────────────────── -->
+    <div class="tab-pane" id="tab-improve">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-graph-up-arrow me-2 text-success"></i>Answer Analyser</h2>
+        <p class="page-subtitle">Get detailed STAR-framework feedback on your interview answers</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-lg-5">
+          <div class="form-card">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Interview Question <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="improveQuestion" rows="3"
+                placeholder="e.g. Tell me about a time you led a project under tight deadlines..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Your Answer <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="improveAnswer" rows="7"
+                placeholder="Write your answer here. Be as detailed as you can — the AI will give you specific feedback..."></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Target Role</label>
+              <input type="text" class="form-control" id="improveRole" placeholder="e.g. Product Manager"/>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-success flex-grow-1 py-2" onclick="analyseAnswer()" id="analyseBtn">
+                <i class="bi bi-graph-up-arrow me-2"></i>Analyse Answer
+              </button>
+              <button class="btn btn-outline-primary py-2" onclick="getModelAnswer()" id="modelAnswerBtn" title="Get model answer">
+                <i class="bi bi-stars"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-7">
+          <div class="result-panel" id="improveResult">
+            <div class="result-placeholder">
+              <i class="bi bi-clipboard2-pulse display-4 text-muted opacity-50"></i>
+              <p class="mt-3 text-muted">Enter a question and your answer, then click <strong>Analyse Answer</strong> to receive detailed feedback, an improved version, and a confidence score.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── INTERVIEW PLANNER TAB ─────────────────────────────────── -->
+    <div class="tab-pane" id="tab-plan">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-calendar2-check-fill me-2 text-warning"></i>Interview Planner</h2>
+        <p class="page-subtitle">Generate a personalised 30-day preparation roadmap</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-lg-4">
+          <div class="form-card">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Target Role <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="planRole" placeholder="e.g. Machine Learning Engineer"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Experience Level</label>
+              <select class="form-select" id="planExperience">
+                <option>Entry-level (0-2 years)</option>
+                <option selected>Mid-level (3-5 years)</option>
+                <option>Senior (6-10 years)</option>
+                <option>Lead / Principal (10+ years)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Target Company</label>
+              <select class="form-select" id="planCompany">
+                <option value="">General</option>
+                {% for key, co in companies.items() %}
+                <option value="{{ key }}">{{ co.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Interview Date</label>
+              <input type="date" class="form-control" id="planDate"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Weak Areas (optional)</label>
+              <input type="text" class="form-control" id="planWeakAreas"
+                placeholder="e.g. System design, behavioural questions"/>
+            </div>
+            <button class="btn btn-warning w-100 py-2 text-dark" onclick="generatePlan()" id="planBtn">
+              <i class="bi bi-calendar2-plus-fill me-2"></i>Generate My 30-Day Plan
+            </button>
+          </div>
+        </div>
+        <div class="col-12 col-lg-8">
+          <div class="result-panel" id="planResult">
+            <div class="result-placeholder">
+              <i class="bi bi-calendar2-week display-4 text-muted opacity-50"></i>
+              <p class="mt-3 text-muted">Fill in your details and generate a week-by-week, day-by-day preparation roadmap tailored to your target company and role.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── RESUME ANALYSER TAB ───────────────────────────────────── -->
+    <div class="tab-pane" id="tab-resume">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-file-earmark-person-fill me-2 text-info"></i>Resume Analyser</h2>
+        <p class="page-subtitle">AI-powered ATS scoring and gap analysis for your resume</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-lg-5">
+          <div class="form-card">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Target Role <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="resumeRole" placeholder="e.g. Senior Backend Engineer"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Target Company</label>
+              <select class="form-select" id="resumeCompany">
+                <option value="">General</option>
+                {% for key, co in companies.items() %}
+                <option value="{{ key }}">{{ co.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Resume Content <span class="text-danger">*</span></label>
+              <textarea class="form-control" id="resumeContent" rows="12"
+                placeholder="Paste your full resume text here...&#10;&#10;Include:&#10;• Work experience with achievements&#10;• Skills and technologies&#10;• Education&#10;• Projects and impact metrics"></textarea>
+            </div>
+            <button class="btn btn-info w-100 py-2 text-dark" onclick="analyseResume()" id="resumeBtn">
+              <i class="bi bi-search me-2"></i>Analyse My Resume
+            </button>
+          </div>
+        </div>
+        <div class="col-12 col-lg-7">
+          <div class="result-panel" id="resumeResult">
+            <div class="result-placeholder">
+              <i class="bi bi-file-earmark-text display-4 text-muted opacity-50"></i>
+              <p class="mt-3 text-muted">Paste your resume and click <strong>Analyse</strong> to get an ATS score, role-match percentage, keyword gaps, and specific improvement suggestions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── COMPANY DATABASE TAB ──────────────────────────────────── -->
+    <div class="tab-pane" id="tab-companies">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-building-fill me-2 text-info"></i>Company Interview Database</h2>
+        <p class="page-subtitle">Insider interview intelligence for top companies from the HR recruitment portal</p>
+      </div>
+      <div class="row g-3" id="companiesGrid">
+        {% for key, co in companies.items() %}
+        <div class="col-12 col-md-6 col-xl-4">
+          <div class="company-card" onclick="selectCompanyForPrep('{{ key }}')">
+            <div class="company-header">
+              <div class="company-logo-badge">{{ co.logo }}</div>
+              <div>
+                <h5 class="mb-0">{{ co.name }}</h5>
+                <div class="d-flex flex-wrap gap-1 mt-1">
+                  {% for tag in co.culture[:3] %}
+                  <span class="badge badge-culture">{{ tag }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="company-body">
+              <div class="mb-2">
+                <strong class="small text-muted d-block mb-1"><i class="bi bi-diagram-3 me-1"></i>Interview Rounds</strong>
+                <ol class="company-rounds">
+                  {% for r in co.rounds %}
+                  <li>{{ r }}</li>
+                  {% endfor %}
+                </ol>
+              </div>
+              <div class="mb-2">
+                <strong class="small text-muted d-block mb-1"><i class="bi bi-bullseye me-1"></i>Focus Areas</strong>
+                <div class="d-flex flex-wrap gap-1">
+                  {% for f in co.focus %}
+                  <span class="badge badge-focus">{{ f }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="tip-box">
+                <i class="bi bi-lightbulb-fill text-warning me-2"></i>
+                <span>{{ co.tip }}</span>
+              </div>
+            </div>
+            <div class="company-footer">
+              <button class="btn btn-sm btn-outline-primary w-100" onclick="event.stopPropagation(); selectCompanyForPrep('{{ key }}')">
+                <i class="bi bi-stars me-1"></i>Prepare for {{ co.name }}
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ─── HR GUIDELINES TAB ──────────────────────────────────────── -->
+    <div class="tab-pane" id="tab-hr">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-people-fill me-2 text-purple"></i>HR Guidelines & Recruitment Portal</h2>
+        <p class="page-subtitle">Professional HR guidelines sourced from recruitment portals and hiring standards</p>
+      </div>
+      <!-- HR Guidelines Content -->
+      <div class="row g-4">
+        <div class="col-12 col-lg-4">
+          <div class="hr-card">
+            <div class="hr-card-icon bg-primary bg-opacity-10"><i class="bi bi-clipboard2-check-fill text-primary"></i></div>
+            <h5>Interview Do's</h5>
+            <ul class="hr-list">
+              <li>Research the company's mission, culture, and recent news</li>
+              <li>Prepare 5-7 STAR stories that cover multiple competencies</li>
+              <li>Arrive 10 minutes early (or join video call 3 min early)</li>
+              <li>Bring copies of your resume and a notepad</li>
+              <li>Maintain eye contact and positive body language</li>
+              <li>Ask thoughtful, prepared questions at the end</li>
+              <li>Send a thank-you note within 24 hours</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="hr-card">
+            <div class="hr-card-icon bg-danger bg-opacity-10"><i class="bi bi-x-circle-fill text-danger"></i></div>
+            <h5>Interview Don'ts</h5>
+            <ul class="hr-list">
+              <li>Never speak negatively about past employers</li>
+              <li>Avoid vague answers — always use specific examples</li>
+              <li>Don't discuss salary until the employer raises it</li>
+              <li>Avoid interrupting the interviewer</li>
+              <li>Don't exaggerate or fabricate experience</li>
+              <li>Never ask about time off in the first interview</li>
+              <li>Avoid checking your phone during the interview</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="hr-card">
+            <div class="hr-card-icon bg-success bg-opacity-10"><i class="bi bi-award-fill text-success"></i></div>
+            <h5>STAR Framework</h5>
+            <div class="star-framework">
+              <div class="star-item">
+                <div class="star-letter bg-primary">S</div>
+                <div><strong>Situation</strong> — Set the context. Where were you, what was the challenge?</div>
+              </div>
+              <div class="star-item">
+                <div class="star-letter bg-warning text-dark">T</div>
+                <div><strong>Task</strong> — Your responsibility. What were YOU specifically tasked with?</div>
+              </div>
+              <div class="star-item">
+                <div class="star-letter bg-success">A</div>
+                <div><strong>Action</strong> — Steps you took. Use "I" not "we". Be specific about YOUR role.</div>
+              </div>
+              <div class="star-item">
+                <div class="star-letter bg-info">R</div>
+                <div><strong>Result</strong> — Quantify outcomes. %, $, time saved, users impacted.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Company-specific HR Guidelines -->
+        <div class="col-12">
+          <h5 class="section-title mb-3"><i class="bi bi-buildings me-2 text-info"></i>Company-Specific HR Portals</h5>
+          <div class="row g-3">
+            {% for key, co in companies.items() %}
+            <div class="col-12 col-md-6">
+              <div class="hr-guideline-card">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="company-logo-sm">{{ co.logo }}</span>
+                  <strong>{{ co.name }}</strong>
+                </div>
+                <p class="small mb-0 text-muted">{{ co.hr_guidelines }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <!-- Legal / Protected Topics -->
+        <div class="col-12">
+          <div class="alert-card alert-warning-custom">
+            <i class="bi bi-shield-exclamation fs-4 text-warning me-3"></i>
+            <div>
+              <strong>Protected Topics — Never Asked in a Legal Interview</strong>
+              <p class="small mb-0 mt-1">By law, interviewers cannot ask about: Age, Race/Ethnicity, Religion, National Origin, Disability Status, Marital/Family Status, Pregnancy, Sexual Orientation, or Genetic Information. If asked, you have the right to decline or redirect the answer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── PROFESSIONAL NETWORK TAB ──────────────────────────────── -->
+    <div class="tab-pane" id="tab-network">
+      <div class="page-header">
+        <h2 class="page-title"><i class="bi bi-diagram-3-fill me-2 text-success"></i>Professional Network Strategy</h2>
+        <p class="page-subtitle">Build your professional network to unlock hidden job opportunities</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-lg-4">
+          <div class="network-card">
+            <div class="network-icon text-primary"><i class="bi bi-linkedin"></i></div>
+            <h5>LinkedIn Optimisation</h5>
+            <ul class="hr-list">
+              <li><strong>Headline:</strong> Use keywords: "Senior SWE | Python | AWS | 2x Startup Founder"</li>
+              <li><strong>About:</strong> Lead with your strongest achievement in 3 sentences</li>
+              <li><strong>Featured:</strong> Pin your best project, article, or media</li>
+              <li>Post weekly — consistency builds algorithmic reach</li>
+              <li>Request 3 recommendations before applying</li>
+              <li>Use Open to Work (private to recruiters only)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="network-card">
+            <div class="network-icon text-warning"><i class="bi bi-people-fill"></i></div>
+            <h5>Informational Interviews</h5>
+            <ul class="hr-list">
+              <li>Identify 3-5 people in your target role/company</li>
+              <li>Send personalised connection requests (not generic)</li>
+              <li>Request a 20-min coffee chat, not a job</li>
+              <li>Prepare 5 thoughtful questions about their journey</li>
+              <li>Follow up with value: share an article they'd find useful</li>
+              <li>80% of jobs are filled through networking, not job boards</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="network-card">
+            <div class="network-icon text-success"><i class="bi bi-github"></i></div>
+            <h5>Build Your Digital Brand</h5>
+            <ul class="hr-list">
+              <li><strong>GitHub:</strong> Pin 3-5 projects with clear READMEs and live demos</li>
+              <li><strong>Portfolio:</strong> Deploy a personal site with case studies</li>
+              <li><strong>Writing:</strong> Publish technical posts on Medium or Dev.to</li>
+              <li>Contribute to open-source in your target domain</li>
+              <li>Speak at meetups or host workshops</li>
+              <li>Recruiters check GitHub before interviews — keep it clean</li>
+            </ul>
+          </div>
+        </div>
+        <!-- Cold Outreach Template -->
+        <div class="col-12 col-lg-6">
+          <div class="template-card">
+            <h6 class="mb-3"><i class="bi bi-envelope-fill me-2 text-primary"></i>LinkedIn Cold Message Template</h6>
+            <div class="template-box">
+              <p>Hi [Name],</p>
+              <p>I came across your profile and was genuinely impressed by your work at [Company], particularly [specific project/achievement].</p>
+              <p>I'm currently preparing to interview for [Role] roles and would love to hear about your experience transitioning into [their role]. Would you be open to a 20-minute chat this month?</p>
+              <p>No worries if you're busy — and thank you either way for the inspiration!</p>
+              <p>Best,<br/>[Your Name]</p>
+            </div>
+            <button class="btn btn-sm btn-outline-primary mt-2" onclick="copyTemplate()">
+              <i class="bi bi-clipboard me-1"></i>Copy Template
+            </button>
+          </div>
+        </div>
+        <!-- Job Search Strategy -->
+        <div class="col-12 col-lg-6">
+          <div class="template-card">
+            <h6 class="mb-3"><i class="bi bi-search me-2 text-success"></i>Job Search Strategy</h6>
+            <div class="strategy-grid">
+              <div class="strategy-item">
+                <div class="strategy-pct text-primary fw-bold">25%</div>
+                <div class="small">Direct Company Career Pages</div>
+              </div>
+              <div class="strategy-item">
+                <div class="strategy-pct text-success fw-bold">35%</div>
+                <div class="small">Referrals &amp; Network</div>
+              </div>
+              <div class="strategy-item">
+                <div class="strategy-pct text-warning fw-bold">20%</div>
+                <div class="small">LinkedIn/Indeed Job Boards</div>
+              </div>
+              <div class="strategy-item">
+                <div class="strategy-pct text-info fw-bold">20%</div>
+                <div class="small">Recruiter Outreach</div>
+              </div>
+            </div>
+            <p class="small text-muted mt-2">Pro tip: referrals have a <strong>7x higher</strong> interview conversion rate vs cold applications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════ LOADING OVERLAY ═══════════════════════════════════ -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-card">
+    <div class="loading-spinner mb-3"></div>
+    <p class="loading-text" id="loadingText">Generating with IBM Granite...</p>
+    <p class="small text-muted">This usually takes 3–8 seconds</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TOAST ═════════════════════════════════════════════ -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="appToast" class="toast align-items-center border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="toastBody">Copied!</div>
+      <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Marked.js for markdown rendering -->
+<script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+<!-- App JS -->
+<script src="/static/js/app.js"></script>
+</body>
+</html>

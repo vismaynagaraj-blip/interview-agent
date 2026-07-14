@@ -1,0 +1,92 @@
+2026-07-15 01:44:13,842 [INFO] Starting AI Interview Agent on port 5000 (debug=False)
+2026-07-15 01:44:13,878 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.36:5000
+2026-07-15 01:44:13,879 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-15 01:49:42,522 [INFO] Starting AI Interview Agent on port 5000 (debug=False)
+2026-07-15 01:49:42,559 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.36:5000
+2026-07-15 01:49:42,559 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-15 01:49:45,237 [INFO] 127.0.0.1 - - [15/Jul/2026 01:49:45] "GET / HTTP/1.1" 200 -
+2026-07-15 01:49:45,479 [INFO] 127.0.0.1 - - [15/Jul/2026 01:49:45] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-07-15 01:49:45,524 [INFO] 127.0.0.1 - - [15/Jul/2026 01:49:45] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-07-15 01:49:45,538 [WARNING] The specified url is not valid. To authenticate with your Cloud Pak for Data installed software, add `"instance_id": "openshift"` to your credentials. To authenticate with your Cloud Pak for Data as a Service account, see https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html .
+2026-07-15 01:49:45,539 [ERROR] Exception on /api/dashboard [GET]
+Traceback (most recent call last):
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\OneDrive\Documents\interview training agent\interview-agent\app.py", line 594, in api_dashboard
+    "watsonx_connected": get_model() is not None,
+                         ^^^^^^^^^^^
+  File "C:\Users\visma\OneDrive\Documents\interview training agent\interview-agent\app.py", line 329, in get_model
+    _model_cache = ModelInference(
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\ibm_watsonx_ai\foundation_models\inference\model_inference.py", line 153, in __init__
+    self._client = APIClient(credentials, verify=verify)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\ibm_watsonx_ai\client.py", line 224, in __init__
+    raise WMLClientError(
+ibm_watsonx_ai.wml_client_error.WMLClientError: The specified url is not valid. To authenticate with your Cloud Pak for Data installed software, add `"instance_id": "openshift"` to your credentials. To authenticate with your Cloud Pak for Data as a Service account, see https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html .
+2026-07-15 01:49:45,545 [INFO] 127.0.0.1 - - [15/Jul/2026 01:49:45] "[35m[1mGET /api/dashboard HTTP/1.1[0m" 500 -
+2026-07-15 01:52:40,148 [WARNING] The specified url is not valid. To authenticate with your Cloud Pak for Data installed software, add `"instance_id": "openshift"` to your credentials. To authenticate with your Cloud Pak for Data as a Service account, see https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html .
+2026-07-15 01:52:40,148 [ERROR] Exception on /api/chat [POST]
+Traceback (most recent call last):
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\OneDrive\Documents\interview training agent\interview-agent\app.py", line 437, in api_chat
+    reply = generate_text(prompt)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\OneDrive\Documents\interview training agent\interview-agent\app.py", line 339, in generate_text
+    model = get_model()
+            ^^^^^^^^^^^
+  File "C:\Users\visma\OneDrive\Documents\interview training agent\interview-agent\app.py", line 329, in get_model
+    _model_cache = ModelInference(
+                   ^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\ibm_watsonx_ai\foundation_models\inference\model_inference.py", line 153, in __init__
+    self._client = APIClient(credentials, verify=verify)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\visma\AppData\Local\Programs\Python\Python311\Lib\site-packages\ibm_watsonx_ai\client.py", line 224, in __init__
+    raise WMLClientError(
+ibm_watsonx_ai.wml_client_error.WMLClientError: The specified url is not valid. To authenticate with your Cloud Pak for Data installed software, add `"instance_id": "openshift"` to your credentials. To authenticate with your Cloud Pak for Data as a Service account, see https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html .
+2026-07-15 01:52:40,151 [INFO] 127.0.0.1 - - [15/Jul/2026 01:52:40] "[35m[1mPOST /api/chat HTTP/1.1[0m" 500 -
+2026-07-15 02:29:54,170 [INFO] Starting AI Interview Agent on port 5000 | debug=False
+2026-07-15 02:29:54,187 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.36:5000
+2026-07-15 02:29:54,188 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-15 02:30:10,443 [INFO] 127.0.0.1 - - [15/Jul/2026 02:30:10] "GET / HTTP/1.1" 200 -
+2026-07-15 02:30:10,678 [INFO] 127.0.0.1 - - [15/Jul/2026 02:30:10] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-07-15 02:30:10,690 [INFO] 127.0.0.1 - - [15/Jul/2026 02:30:10] "GET /static/js/app.js HTTP/1.1" 200 -
+2026-07-15 02:30:11,002 [WARNING] The specified url is not valid. To authenticate with your Cloud Pak for Data installed software, add `"instance_id": "openshift"` to your credentials. To authenticate with your Cloud Pak for Data as a Service account, see https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html .
+2026-07-15 02:30:11,004 [ERROR] Failed to initialise watsonx.ai model: The specified url is not valid. To authenticate with your Cloud Pak for Data installed software, add `"instance_id": "openshift"` to your credentials. To authenticate with your Cloud Pak for Data as a Service account, see https://dataplatform.cloud.ibm.com/docs/content/wsj/analyze-data/ml-authentication.html .
+2026-07-15 02:30:11,005 [INFO] 127.0.0.1 - - [15/Jul/2026 02:30:11] "GET /api/dashboard HTTP/1.1" 200 -
